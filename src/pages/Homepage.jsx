@@ -54,16 +54,23 @@ function Homepage() {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  const filteredProblems = problems.filter((prob) => {
-    const matchDifficulty = filters.difficulty === 'all' || prob.difficulty.toLowerCase() === filters.difficulty;
-    const matchTag = filters.tag === 'all' || (prob.tags ===filters.tag);
-    
-    const matchStatus = filters.status==='all'||solvedProblems.some(sp => sp._id === prob._id);
+ // Is tarah se likho taaki agar 'problems' array na ho, toh app crash na kare
+const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
+  // Defense: check karo ki prob aur uski properties exist karti hain
+  if (!prob) return false;
+
+  const matchDifficulty = filters.difficulty === 'all' || 
+                         (prob.difficulty && prob.difficulty.toLowerCase() === filters.difficulty);
   
+  const matchTag = filters.tag === 'all' || (prob.tags === filters.tag);
+  
+  // Solved problems array check
+  const isSolvedArray = Array.isArray(solvedProblems);
+  const matchStatus = filters.status === 'all' || 
+                      (isSolvedArray && solvedProblems.some(sp => sp._id === prob._id));
 
-    return matchDifficulty && matchTag && matchStatus;
-  });
-
+  return matchDifficulty && matchTag && matchStatus;
+}) : []; // Agar array nahi hai, toh khali array return karo
   return (
     <div className="min-h-screen bg-base-300 text-base-content">
       {/* Navigation Bar */}
