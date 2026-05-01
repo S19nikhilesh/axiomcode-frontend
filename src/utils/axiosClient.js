@@ -2,7 +2,7 @@
 import axios from "axios"
 
 const axiosClient= axios.create({
-    baseURL: "http://localhost:3000", //backend mera is url pe host hai
+    baseURL: "https://axiomcode-backend-1.onrender.com", //backend mera is url pe host hai
     withCredentials:true,// browser tu iske sath cookies to attach kar dena
     headers: { 
         'Content-Type':'application/json' //mera data json format mai hai
