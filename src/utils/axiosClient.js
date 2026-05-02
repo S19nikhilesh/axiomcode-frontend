@@ -6,7 +6,10 @@ const axiosClient= axios.create({
      //backend mera is url pe host hai baseURL:"http://localhost:3000", 
     withCredentials:true,// browser tu iske sath cookies to attach kar dena
     headers: { 
-        'Content-Type':'application/json' //mera data json format mai hai
+        'Content-Type':'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0', //mera data json format mai hai
      },
   });
 
