@@ -20,17 +20,6 @@ function Homepage() {
   });
   console.log("/homepage pe aaya ")
   useEffect(() => {
-    
-   
-      const fetchProblems=async()=>{
-        try{
-          const {data}=await axiosClient.get('/problem/getAllProblem')
-          setProblems(data);
-        }catch(error){
-          console.log('Error Fetching Problems',error);
-        }
-      };
-      
       const fetchSolvedProblems=async()=>{
         try{
           const {data}=await axiosClient.get('/problem/solvedProblemsByUser')
@@ -39,14 +28,23 @@ function Homepage() {
           console.log('Error Fetching Problems',error);
         }
       };
-
-      fetchProblems();
-      
       if(user) fetchSolvedProblems();
     } 
     , [user]);
 
-    
+    useEffect(() => {
+      const fetchProblems=async()=>{
+        try{
+          const {data}=await axiosClient.get('/problem/getAllProblem')
+          setProblems(data);
+        }catch(error){
+          console.log('Error Fetching Problems',error);
+        }
+      };
+
+      fetchProblems();
+    },[]) ;
+
   const handleLogout = () => {
     dispatch(logoutUser());
   };

@@ -49,7 +49,7 @@ function App() {
 
         <Route path="/admin/video" element={isAuthenticated && user?.role === 'admin' ? <AdminVideo /> : <Navigate to="/" />} />
         <Route path="/admin/upload/:problemId" element={isAuthenticated && user?.role === 'admin' ? <AdminUpload /> : <Navigate to="/" />} />
-        <Route path="/problem/:problemId" element={isAuthenticated?<Navigate to="/"/>:<ProblemPage/>}></Route>
+        <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage/>:<Navigate to="/login"/>}></Route>
         
       </Routes>
     </>
