@@ -27,7 +27,7 @@ function Login() {
   useEffect(() => {
     
     if (isAuthenticated && user?.role) {
-      console.log("Role Found:", user.role); // Debugging
+      console.log("Role Found:", user.role); 
       
       if (user.role === 'admin') {
         navigate('/admin');

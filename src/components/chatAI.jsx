@@ -10,7 +10,7 @@ const ChatAi = ({ problem }) => {
     {
       role: "user",
       parts: [{ text: "Hello" }],
-    },
+   },
     {
       role: "model",
       parts: [{ text: "Great to meet you. I am your DSA tutor. How can I help you with this problem today?" }],
@@ -30,26 +30,22 @@ const ChatAi = ({ problem }) => {
     const userPrompt = data.message;
     if (!userPrompt.trim()) return;
 
-    // 1. Create the new message object
     const newMessage = { role: 'user', parts: [{ text: userPrompt }] };
     
-    // 2. Create the updated history array to send to API (to avoid state delay)
     const updatedHistory = [...messages, newMessage];
-
-    // 3. Update UI immediately
     setMessages(updatedHistory);
     reset();
 
     try {
       const response = await axiosClient.post('/ai/chat', {
-        message: updatedHistory, // Send the full history including the new message
+        message: updatedHistory, 
         title: problem.title,
         description: problem.description,
         testCases: problem.visibleTestCases,
         startCode: problem.startCode
       });
 
-      // 4. Add AI response to UI
+     
       setMessages(prev => [...prev, {
         role: 'model',
         parts: [{ text: response.data.message }]
@@ -65,12 +61,17 @@ const ChatAi = ({ problem }) => {
   };
 
   return (
-    <div className="flex flex-col h-[500px] bg-base-200 rounded-lg p-4 shadow-xl">
-      <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
+    <div className="flex flex-col h-[500px] bg-neutral-900 border border-neutral-800  p-4 shadow-2xl">
+     
+      <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 scrollbar-thin">
         {messages.map((msg, idx) => (
           <div key={idx} className={`chat ${msg.role === 'model' ? 'chat-start' : 'chat-end'}`}>
-            <div className={`chat-bubble ${msg.role === 'model' ? 'chat-bubble-neutral' : 'chat-bubble-success'} max-w-[90%]`}>
-              <div className="prose prose-sm text-white">
+            <div className={`chat-bubble max-w-[85%] px-4 py-2.5  shadow-sm text-base  ${
+              msg.role === 'model' 
+                ? 'bg-neutral-800 text-zinc-100 border-neutral-700/60' 
+                : 'bg-emerald-600 text-white border-emerald-500/20'
+            }`}>
+              <div className="prose prose-sm leading-relaxed max-w-none text-current">
                 <Markdown>{msg.parts[0].text}</Markdown>
               </div>
             </div>
@@ -79,15 +80,16 @@ const ChatAi = ({ problem }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-2">
+      
+      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-2 pt-2 border-t border-neutral-800">
         <input
           {...register("message", { required: true })}
           autoComplete="off"
           placeholder="Ask a hint..."
-          className="input input-bordered flex-1 bg-base-100 focus:outline-none focus:border-success"
+          className="input h-11 flex-1 bg-neutral-800 border-neutral-700 text-zinc-200 text-sm rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
         />
-        <button type="submit" className="btn btn-square btn-success">
-          <Send size={20} />
+        <button type="submit" className="btn h-11 w-11 min-h-0 p-0 rounded-xl bg-emerald-600 hover:bg-emerald-500 border-none text-white transition-colors">
+          <Send size={18} />
         </button>
       </form>
     </div>

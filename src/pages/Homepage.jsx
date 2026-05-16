@@ -28,9 +28,18 @@ function Homepage() {
           console.log('Error Fetching Problems',error);
         }
       };
-      if(user) fetchSolvedProblems();
+      if (user) {
+        fetchSolvedProblems();
+      }else{
+        setTimeout(() => {
+          setSolvedProblems([]);
+        }, 0);
+      }
+      
     } 
     , [user]);
+
+
 
     useEffect(() => {
       const fetchProblems=async()=>{
@@ -47,6 +56,7 @@ function Homepage() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    
   };
 
   const handleFilterChange = (e) => {
@@ -112,8 +122,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
             </div>
           ) : (
             <div className="flex gap-2">
-              <Link to="/login" className="btn btn-ghost btn-sm">Login</Link>
-              <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
+              <Link to="/login" className="btn btn-primary btn-sm">Login</Link>
             </div>
           )}
         </div>

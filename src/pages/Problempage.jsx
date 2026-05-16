@@ -44,6 +44,11 @@ function ProblemPage() {
 
   function handleEditorDidMount(editor) {
     editorRef.current = editor;
+
+    if (problem) {
+      const langCode = problem.startCode?.find(c => c.language === selectedLanguage)?.initialCode;
+      editor.setValue(langCode || "// write your code here");
+    }
   }
 
   // API Call for Running Code (Dry Run)
@@ -233,8 +238,8 @@ function ProblemPage() {
 
           {/*AI KA CODE*/}
           {activeLeftTab === 'chatAI' && (
-            <div >
-              <p className="text-lg font-semibold">chat with AI </p>
+            <div   >
+              <p className="text-lg font-semibold mb-3"> AXIOM AI </p>
              <ChatAi problem={problem}/>
             </div>
           )}
