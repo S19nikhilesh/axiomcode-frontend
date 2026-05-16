@@ -319,12 +319,11 @@ function ProblemPage() {
                   <div className="space-y-2">
                     {/* Simple Status Row */}
                     <div className="flex items-center justify-between border-b border-[#3c3c3c] pb-1">
-                      <p className={`text-sm font-bold uppercase ${runResult.status === "accepted" ? "text-green-500" : "text-red-500"}`}>
+                      <p className={`text-BASE font-bold uppercase ${runResult.status === "accepted" ? "text-green-500" : "text-red-500"}`}>
                         {runResult.status?.replace('_', ' ')}
                       </p>
-                      <div className="text-[10px] text-gray-500 flex gap-2">
-                        <span>{runResult.passed}/{runResult.total} PASSED</span>
-                        <span>{runResult.runtime}s</span>
+                      <div className="text-[16px] text-gray-500 flex gap-2">
+                        <span>{runResult.passed}/{runResult.total} TEST CASES PASSED</span>              
                       </div>
                     </div>
 
