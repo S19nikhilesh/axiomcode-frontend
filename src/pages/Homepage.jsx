@@ -46,6 +46,7 @@ function Homepage() {
     } 
     , [user]);
 
+    
   const handleLogout = () => {
     dispatch(logoutUser());
   };
@@ -207,7 +208,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
                         <Link to={`/problem/${problem._id}`} className="font-medium hover:text-primary transition-colors">
                           {problem.title}
                         </Link>
-                      </td>
+                      </td>   
                       <td>
                         <span className={`
                           badge badge-sm font-bold border-none
