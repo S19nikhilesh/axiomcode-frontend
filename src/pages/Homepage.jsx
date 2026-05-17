@@ -176,6 +176,16 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto p-4 md:p-8">
+
+      {activeTab === 'about' && (
+            <div className="prose max-w-none">
+              <h2 className="text-xl font-bold mb-4">Editorial</h2>
+              <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                <span>ABOUT PAGE</span>
+              </div>
+            </div>
+      )}
+
       {activeTab==='problems' && (
       <>
         {/* Statistics Hero (Optional but looks good) */}
