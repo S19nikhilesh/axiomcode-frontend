@@ -10,7 +10,7 @@ function ProblemPage() {
   const { problemId } = useParams();
   const editorRef = useRef(null);
   
-  // State Management
+  // State Managemen t
   const [problem, setProblem] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('c++');
   const [activeLeftTab, setActiveLeftTab] = useState('description');
