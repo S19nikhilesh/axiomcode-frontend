@@ -176,6 +176,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
             <option value="linkedlist">Linked List</option>
             <option value="stack">Stack</option>
             <option value="string">String</option>
+            <option value="mathematics">Mathematics</option>
           </select>
         </div>
 

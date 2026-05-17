@@ -13,7 +13,7 @@ const problemSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   difficulty: z.enum(['Easy', 'Medium', 'Hard']),
-  tags: z.enum(['array', 'linkedlist', 'graph', 'dp']),
+  tags: z.enum(['array', 'linkedlist', 'graph', 'dp','mathematics']),
   visibleTestCases: z.array(z.object({
     input: z.string().min(1, 'Input is required'),
     output: z.string().min(1, 'Output is required'),
@@ -26,7 +26,6 @@ const problemSchema = z.object({
   startCode: z.array(z.object({
     language: z.string(),
     initialCode: z.string(),
-    hiddenStartCode: z.string(),
     functionCall: z.string()
   })),
   referenceSolution: z.array(z.object({
@@ -47,7 +46,7 @@ function AdminPanel() {
       tags: 'array',
       visibleTestCases: [{ input: '', output: '', explanation: '' }],
       hiddenTestCases: [{ input: '', output: '' }],
-      startCode: LANGUAGES.map(lang => ({ language: lang, initialCode: '',hiddenStartCode: '', functionCall: ''  })),
+      startCode: LANGUAGES.map(lang => ({ language: lang, initialCode: '', functionCall: ''  })),
       referenceSolution: LANGUAGES.map(lang => ({ language: lang, completeCode: '' }))
     }
   });
@@ -109,12 +108,12 @@ function AdminPanel() {
         {/* --- SECTION 1: BASIC INFO --- */}
         <div className="card bg-base-100 shadow-xl p-6 border-t-4 border-primary">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
-            <FileText size={22}/> Core Details
+            <FileText size={22}/>   
           </h2>
           <div className="grid grid-cols-1 gap-4">
             <div className="form-control">
               <label className="label font-medium">Problem Title</label>
-              <input {...register('title')} placeholder="e.g. Two Sum" className={`input input-bordered ${errors.title && 'input-error'}`} />
+              <input {...register('title')} placeholder="e.g. Two Sum" className={`input input-bordered ${errors.title && 'input-error'} `} />
               {errors.title && <p className="text-error text-xs mt-1">{errors.title.message}</p>}
             </div>
 
@@ -140,6 +139,7 @@ function AdminPanel() {
                   <option value="linkedlist">Linked List</option>
                   <option value="graph">Graph</option>
                   <option value="dp">Dynamic Programming</option>
+                  <option value="mathematics">Mathematics</option>
                 </select>
               </div>
             </div>
@@ -207,32 +207,14 @@ function AdminPanel() {
             {/* ADD THESE TWO HIDDEN INPUTS */}
             <input type="hidden" {...register(`startCode.${index}.language`)} value={lang} />
             <input type="hidden" {...register(`referenceSolution.${index}.language`)} value={lang} />
-
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-2">
-              <div className="form-control">
-                <label className="label text-xs font-bold opacity-70">STARTER TEMPLATE</label>
-                <textarea 
-                  {...register(`startCode.${index}.initialCode`)} 
-                  className="textarea textarea-bordered border-accent font-mono text-sm h-48 bg-neutral text-neutral-content"
-                />
-              </div>
-              <div className="form-control">
-                <label className="label text-xs font-bold opacity-60">HIDDEN SETUP (Before User Code)</label>
-                <textarea {...register(`startCode.${index}.hiddenStartCode`)} placeholder="int n; cin >> n;" className="textarea textarea-bordered border-accent font-mono text-sm h-48 bg-neutral text-neutral-content"/>
-              </div>
-
-              <div className="form-control">
-                <label className="label text-xs font-bold opacity-60">FUNCTION CALL (After User Code)</label>
-                <textarea {...register(`startCode.${index}.functionCall`)} placeholder="cout << sumOfNumbers(n);" className="textarea textarea-bordered border-accent font-mono text-sm h-48 bg-neutral text-neutral-content" />
-              </div>
-              <div className="form-control">
-                <label className="label text-xs font-bold opacity-70">REFERENCE SOLUTION</label>
-                <textarea 
-                  {...register(`referenceSolution.${index}.completeCode`)} 
-                  className="textarea textarea-bordered border-accent font-mono text-sm h-48 bg-neutral text-neutral-content" 
-                />
-              </div>
-            </div>
+            <div className="flex justify-around">
+                  <textarea {...register(`startCode.${index}.initialCode`)} placeholder="Initial Code (shown to user)"
+                   className="textarea textarea-bordered font-mono text-sm h-32 bg-neutral border-accent text-neutral-content" />
+                  <textarea {...register(`startCode.${index}.functionCall`)} placeholder="function call" 
+                  className="textarea textarea-bordered font-mono text-sm h-32 bg-neutral border-accent" />
+                  <textarea {...register(`referenceSolution.${index}.completeCode`)} placeholder="Reference Solution (Must Pass)" 
+                  className="textarea textarea-bordered textarea-primary font-mono text-sm h-32 bg-neutral border-accent" />
+                </div>
           </div>
         </div>
         ))}

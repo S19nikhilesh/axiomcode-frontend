@@ -11,7 +11,7 @@ const problemSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   difficulty: z.enum(['Easy', 'Medium', 'Hard']),
-  tags: z.enum(['array', 'linkedlist', 'garph', 'dp']),
+  tags: z.enum(['array', 'linkedlist', 'garph', 'dp','mathematics']),
   visibleTestCases: z.array(z.object({
     input: z.string().min(1, 'Input is required'),
     output: z.string().min(1, 'Output is required'),
@@ -24,7 +24,6 @@ const problemSchema = z.object({
   startCode: z.array(z.object({
     language: z.string(),
     initialCode: z.string(),
-    hiddenStartCode: z.string(),
     functionCall: z.string()
   })),
   referenceSolution: z.array(z.object({
@@ -83,32 +82,33 @@ function Adminpanel() {
           <div className="space-y-4">
             <div className="form-control">
               <label className="label"><span className="label-text">Title</span></label>
-              <input {...register('title')} className={`input input-bordered ${errors.title && 'input-error'}`} />
+              <input {...register('title')} className={`input input-bordered ${errors.title && 'input-error'} ml-14`} />
               {errors.title && <span className="text-error text-sm">{errors.title.message}</span>}
             </div>
 
             <div className="form-control">
               <label className="label"><span className="label-text">Description</span></label>
-              <textarea {...register('description')} className={`textarea textarea-bordered h-24 ${errors.description && 'textarea-error'}`} />
+              <textarea {...register('description')} className={`ml-1.5 textarea textarea-bordered h-24 ${errors.description && 'textarea-error'}`} />
               {errors.description && <span className="text-error text-sm">{errors.description.message}</span>}
             </div>
 
             <div className="flex gap-4">
               <div className="form-control w-1/2">
                 <label className="label"><span className="label-text">Difficulty</span></label>
-                <select {...register('difficulty')} className="select select-bordered">
+                <select {...register('difficulty')} className="select select-bordered ml-6">
                   <option value="Easy">Easy</option>
                   <option value="Medium">Medium</option>
                   <option value="Hard">Hard</option>
                 </select>
               </div>
               <div className="form-control w-1/2">
-                <label className="label"><span className="label-text">Tag</span></label>
+                <label className="label"><span className="label-text mr-4">Tag</span></label>
                 <select {...register('tags')} className="select select-bordered">
                   <option value="array">Array</option>
                   <option value="linkedlist">Linked List</option>
                   <option value="garph">Graph</option>
                   <option value="dp">DP</option>
+                  <option value="mathematics">Mathematics</option>
                 </select>
               </div>
             </div>
@@ -150,11 +150,13 @@ function Adminpanel() {
             {LANGUAGES.map((lang, index) => (
               <div key={lang} className="border-t pt-4">
                 <h3 className="font-bold uppercase text-primary mb-2">{lang}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <textarea {...register(`startCode.${index}.initialCode`)} placeholder="Initial Code (Starter)" className="textarea textarea-bordered font-mono text-sm h-32" />
-                  <textarea {...register(`startCode.${index}.hiddenStartCode`)} placeholder="hidden start Code" className="textarea textarea-bordered font-mono text-sm h-32" />
-                  <textarea {...register(`startCode.${index}.functionCall`)} placeholder="function call" className="textarea textarea-bordered font-mono text-sm h-32" />
-                  <textarea {...register(`referenceSolution.${index}.completeCode`)} placeholder="Reference Solution (Must Pass)" className="textarea textarea-bordered textarea-primary font-mono text-sm h-32" />
+                <div className="flex justify-around">
+                  <textarea {...register(`startCode.${index}.initialCode`)} placeholder="Initial Code (shown to user)"
+                   className="textarea textarea-bordered font-mono text-sm h-32 bg-neutral border-accent text-neutral-content" />
+                  <textarea {...register(`startCode.${index}.functionCall`)} placeholder="function call" 
+                  className="textarea textarea-bordered font-mono text-sm h-32 bg-neutral border-accent" />
+                  <textarea {...register(`referenceSolution.${index}.completeCode`)} placeholder="Reference Solution (Must Pass)" 
+                  className="textarea textarea-bordered textarea-primary font-mono text-sm h-32 bg-neutral border-accent" />
                 </div>
               </div>
             ))}
