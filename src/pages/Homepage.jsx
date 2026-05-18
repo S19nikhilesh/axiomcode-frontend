@@ -6,13 +6,14 @@ import { logoutUser } from '../authSlice';
 import { CheckCircle, CircleHelp, LogOut, User as UserIcon } from 'lucide-react'; // Using icons for better UI
 import About from '../components/About'; 
 import Navbar from '../components/Navbar';
-function Homepage() {
+
+function Homepage({activeTab, setActiveTab}) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
   const [problems, setProblems] = useState([]);
   const [solvedProblems, setSolvedProblems] = useState([]);
-  const [activeTab, setActiveTab] = useState(!user ? 'about' : 'problems');
+  
 
   // const [loading, setLoading] = useState(true); // Added loading state
   const loading=false;
@@ -225,7 +226,8 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           </table>
         </div>
       </div>)}  
-        
+
+      
       </main>
     </div>
   );

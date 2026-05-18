@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
 import { LogOut, User as UserIcon, Sun, Moon } from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
   // Global theme state handler
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const navigate = useNavigate();
 
   useEffect(() => {
     // HTML element par attribute update call lagaya
@@ -17,11 +18,10 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
   };
 
   return (
-    // bg-zinc-950/40 ko thoda aur kam dark /60 kiya takki base-100 se dynamic transition smooth lage
     <nav className={`navbar px-4 md:px-12 sticky top-0 z-50 flex justify-between transition-all duration-200 ${
         activeTab === 'about'
-          ? 'dark bg-zinc-950/60 backdrop-blur-md border-b border-zinc-800/40 text-white'
-          : 'bg-base-100 border-b border-base-content/10 shadow-sm'
+          ? 'bg-zinc-950/60 backdrop-blur-md border-b border-zinc-800/40 text-white'
+          : 'bg-base-100 border-b border-base-content/10 shadow-sm text-base-content'
       }`}
     >
       {/* Logo & Tabs Left Wrapper */}
@@ -38,8 +38,12 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
 
       {/* Tabs Section */}
       <div className="hidden md:flex items-center gap-8 ml-24 font-medium text-sm flex-1">
+        {/* 1. ABOUT TAB */}
         <span 
-          onClick={() => setActiveTab('about')}
+          onClick={() => {
+            setActiveTab('about');
+            navigate('/'); 
+          }}
           className={`cursor-pointer transition-colors pb-1 ${
             activeTab === 'about' 
               ? 'text-primary font-bold border-b-2 border-primary' 
@@ -48,8 +52,13 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         >
           About
         </span>
+
+        {/* 2. PROBLEMS TAB */}
         <span 
-          onClick={() => setActiveTab('problems')}
+          onClick={() => {
+            setActiveTab('problems');
+            navigate('/'); 
+          }}
           className={`cursor-pointer transition-colors pb-1 ${
             activeTab === 'problems' 
               ? 'text-primary font-bold border-b-2 border-primary' 
@@ -58,8 +67,13 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         >
           Problems
         </span>
-        <span 
-          onClick={() => setActiveTab('contest')}
+
+        {/* 3. CONTEST TAB - (🎯 Fixed: nClick Typo Fixed to onClick) */}
+        {/* <span 
+          onClick={() => {
+            setActiveTab('contest');
+            navigate('/'); 
+          }}
           className={`cursor-pointer transition-colors pb-1 ${
             activeTab === 'contest' 
               ? 'text-primary font-bold border-b-2 border-primary' 
@@ -67,8 +81,11 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
           }`}
         >
           Contest
-        </span>
-        <span 
+        </span> */}
+
+        {/* 4. POTD TAB */}
+        <Link 
+          to="/potd"
           onClick={() => setActiveTab('potd')}
           className={`cursor-pointer transition-colors pb-1 ${
             activeTab === 'potd' 
@@ -77,19 +94,17 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
           }`}
         >
           POTD
-        </span>
+        </Link>
       </div>
 
       {/* Right Side: Theme Switch + Admin + Profile Controls */}
       <div className="flex items-center gap-4">
         
         {/* 🌗 INDUSTRIAL THEME TOGGLE SWITCH */}
-        {activeTab!=='about' &&(
-            <button 
+        {activeTab !== 'about' && (
+          <button 
             onClick={toggleTheme}
-            className={`btn btn-ghost btn-circle btn-sm transition-colors ${
-              activeTab === 'about' ? 'text-zinc-300 hover:text-white' : 'text-base-content/70 hover:text-base-content'
-            }`}
+            className="btn btn-ghost btn-circle btn-sm transition-colors text-base-content/70 hover:text-base-content"
             aria-label="Toggle Theme"
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -112,25 +127,24 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         <div className="flex-none gap-2">
           {user ? (
             <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border border-primary/20">
-              {/* bg-neutral ko hatakar conditional ya dynamic neutral-content utilities lagayi hain */}
-              <div className={`w-10 rounded-full flex items-center justify-center transition-colors ${
-                activeTab === 'about' ? 'bg-zinc-800 text-zinc-100' : 'bg-base-200 text-base-content'
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar border border-primary/20">
+                <div className={`w-10 rounded-full flex items-center justify-center transition-colors ${
+                  activeTab === 'about' ? 'bg-zinc-800 text-zinc-100' : 'bg-base-200 text-base-content'
+                }`}>
+                  <UserIcon size={20} />
+                </div>
+              </label>
+              
+              <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
+                activeTab === 'about'
+                  ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
+                  : 'bg-base-100 border-base-content/10 text-base-content'
               }`}>
-                <UserIcon size={20} />
-              </div>
-            </label>
-            
-            <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
-              activeTab === 'about'
-                ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
-                : 'bg-base-100 border-base-content/10 text-base-content'
-            }`}>
-              <li className="menu-title text-primary">Hello, {user.firstName}</li>
-              <li><Link to="/profile">Profile</Link></li>
-              <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
-            </ul>
-          </div>
+                <li className="menu-title text-primary">Hello, {user.firstName}</li>
+                <li><Link to="/profile">Profile</Link></li>
+                <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
+              </ul>
+            </div>
           ) : (
             <div className="flex gap-2">
               <Link to="/login" className="btn btn-primary btn-sm">Login</Link>
