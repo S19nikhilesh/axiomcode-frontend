@@ -91,20 +91,31 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
   return (
     <div className="min-h-screen bg-base-300 text-base-content">
       {/* Navigation Bar */}
-      <nav className="navbar bg-zinc-950/40 backdrop-blur-md border-b border-zinc-800/60 px-4 md:px-12 sticky top-0 z-50 flex justify-between">
+      <nav className={`navbar px-4 md:px-12 sticky top-0 z-50 flex justify-between transition-colors duration-200 ${
+        activeTab === 'about'
+          ? 'bg-zinc-950/40 backdrop-blur-md border-b border-zinc-800/60'
+          : 'bg-base-100 border-b border-base-content/10'
+      }`}>
         {/* Logo & Tabs Left Wrapper */}
         <div className="flex items-center gap-2"> 
           <NavLink to="/" className="text-2xl font-bold tracking-tighter text-primary">
-            Axiom<span className="text-base-content font-light text-lg italic">Code</span>
+            Axiom
+            <span className={`text-lg font-light italic transition-colors ${
+              activeTab === 'about' ? 'text-zinc-100' : 'text-base-content'
+            }`}>
+              Code
+            </span>
           </NavLink>
         </div>
 
-        {/* ✨ Tabs Section: Wahi original fonts, sizes aur padding bina kisi change ke */}
+        {/* ✨ Tabs Section: Conditional colors mapping */}
         <div className="hidden md:flex items-center gap-8 ml-24 font-medium text-sm flex-1">
           <span 
             onClick={() => setActiveTab('about')}
             className={`cursor-pointer transition-colors pb-1 ${
-              activeTab === 'about' ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/70 hover:text-base-content'
+              activeTab === 'about' 
+                ? 'text-primary font-bold border-b-2 border-primary' 
+                : 'text-base-content/70 hover:text-base-content'
             }`}
           >
             About
@@ -112,7 +123,9 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           <span 
             onClick={() => setActiveTab('problems')}
             className={`cursor-pointer transition-colors pb-1 ${
-              activeTab === 'problems' ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/70 hover:text-base-content'
+              activeTab === 'problems' 
+                ? 'text-primary font-bold border-b-2 border-primary' 
+                : activeTab === 'about' ? 'text-zinc-400 hover:text-zinc-100' : 'text-base-content/70 hover:text-base-content'
             }`}
           >
             Problems
@@ -120,7 +133,9 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           <span 
             onClick={() => setActiveTab('contest')}
             className={`cursor-pointer transition-colors pb-1 ${
-              activeTab === 'contest' ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/70 hover:text-base-content'
+              activeTab === 'contest' 
+                ? 'text-primary font-bold border-b-2 border-primary' 
+                : activeTab === 'about' ? 'text-zinc-400 hover:text-zinc-100' : 'text-base-content/70 hover:text-base-content'
             }`}
           >
             Contest
@@ -128,7 +143,9 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           <span 
             onClick={() => setActiveTab('potd')}
             className={`cursor-pointer transition-colors pb-1 ${
-              activeTab === 'potd' ? 'text-primary font-bold border-b-2 border-primary' : 'text-base-content/70 hover:text-base-content'
+              activeTab === 'potd' 
+                ? 'text-primary font-bold border-b-2 border-primary' 
+                : activeTab === 'about' ? 'text-zinc-400 hover:text-zinc-100' : 'text-base-content/70 hover:text-base-content'
             }`}
           >
             POTD
@@ -155,11 +172,16 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar border border-primary/20">
                   <div className="w-10 rounded-full flex items-center justify-center bg-neutral">
-                    <UserIcon size={20} />
+                    <UserIcon size={20} className={activeTab === 'about' ? 'text-zinc-100' : 'text-base-content'} />
                   </div>
                 </label>
                 
-                <ul tabIndex={0} className="mt-3 z-1 p-2 shadow menu menu-sm dropdown-content bg-zinc-900/95 backdrop-blur-md rounded-box w-52 border border-zinc-800">
+                {/* Dropdown Menu: Syncing colors according to active view state */}
+                <ul tabIndex={0} className={`mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
+                  activeTab === 'about'
+                    ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
+                    : 'bg-base-100 border-base-content/10 text-base-content'
+                }`}>
                   <li className="menu-title text-primary">Hello, {user.firstName}</li>
                   <li><Link to="/profile">Profile</Link></li>
                   <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
@@ -170,7 +192,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
                 <Link to="/login" className="btn btn-primary btn-sm">Login</Link>
               </div>
             )}
-        </div>
+          </div>
         </div>
       </nav>
 
