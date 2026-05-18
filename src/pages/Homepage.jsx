@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
 import { CheckCircle, CircleHelp, LogOut, User as UserIcon } from 'lucide-react'; // Using icons for better UI
- 
+import About from '../components/About'; 
 function Homepage() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -91,7 +91,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
   return (
     <div className="min-h-screen bg-base-300 text-base-content">
       {/* Navigation Bar */}
-      <nav className="navbar bg-base-100 border-b border-base-content/10 px-4 md:px-12 sticky top-0 z-50 flex justify-between">
+      <nav className="navbar bg-zinc-950/40 backdrop-blur-md border-b border-zinc-800/60 px-4 md:px-12 sticky top-0 z-50 flex justify-between">
         {/* Logo & Tabs Left Wrapper */}
         <div className="flex items-center gap-2"> 
           <NavLink to="/" className="text-2xl font-bold tracking-tighter text-primary">
@@ -99,7 +99,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           </NavLink>
         </div>
 
-        {/* ✨ Tabs Section: Isme ml-16 aur gap-8 lagaya hai taaki door-door aur saaf dikhein */}
+        {/* ✨ Tabs Section: Wahi original fonts, sizes aur padding bina kisi change ke */}
         <div className="hidden md:flex items-center gap-8 ml-24 font-medium text-sm flex-1">
           <span 
             onClick={() => setActiveTab('about')}
@@ -159,7 +159,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
                   </div>
                 </label>
                 
-                <ul tabIndex={0} className="mt-3 z-1 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-base-content/10">
+                <ul tabIndex={0} className="mt-3 z-1 p-2 shadow menu menu-sm dropdown-content bg-zinc-900/95 backdrop-blur-md rounded-box w-52 border border-zinc-800">
                   <li className="menu-title text-primary">Hello, {user.firstName}</li>
                   <li><Link to="/profile">Profile</Link></li>
                   <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
@@ -175,19 +175,16 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-4 md:p-8">
+      <main >
 
       {activeTab === 'about' && (
             <div className="prose max-w-none">
-              <h2 className="text-xl font-bold mb-4">Editorial</h2>
-              <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                <span>ABOUT PAGE</span>
-              </div>
+              <About setActiveTab={setActiveTab}/>
             </div>
       )}
 
       {activeTab==='problems' && (
-      <>
+      <div className="max-w-6xl mx-auto p-4 md:p-8">
         {/* Statistics Hero (Optional but looks good) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="stats shadow bg-base-100">
@@ -305,7 +302,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
             </tbody>
           </table>
         </div>
-      </>)}  
+      </div>)}  
         
       </main>
     </div>
