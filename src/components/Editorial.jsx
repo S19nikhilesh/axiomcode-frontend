@@ -1,11 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Pause, Play } from 'lucide-react';
 
-
-
 const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
-
-
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -45,7 +41,7 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
 
   return (
     <div 
-      className="relative w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-lg"
+      className="relative w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-lg border border-base-content/10 transition-colors duration-200"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -58,50 +54,51 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
         className="w-full aspect-video bg-black cursor-pointer"
       />
       
-      {/* Video Controls Overlay */}
+      {/* Video Controls Overlay - Added bg-gradient-to-t layout fix */}
       <div 
-        className={`absolute bottom-0 left-0 right-0 from-black/70 to-transparent p-4 transition-opacity ${
+        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 transition-opacity duration-300 ${
           isHovering || !isPlaying ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {/* Play/Pause Button */}
-        <button
-          onClick={togglePlayPause}
-          className="btn btn-circle btn-primary mr-3"
-          aria-label={isPlaying ? "Pause" : "Play"}
-        >
-          {isPlaying ? (
-            <Pause/>
-          ) : (
-            <Play/>
-          )}
-        </button>
+        <div className="flex items-center mb-1">
+          {/* Play/Pause Button */}
+          <button
+            onClick={togglePlayPause}
+            className="btn btn-circle btn-primary btn-sm mr-3 shadow-md"
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            {isPlaying ? (
+              <Pause size={16} className="text-primary-content" />
+            ) : (
+              <Play size={16} className="text-primary-content" fill="currentColor" />
+            )}
+          </button>
+        </div>
         
         {/* Progress Bar */}
-        <div className="flex items-center w-full mt-2">
-          <span className="text-white text-sm mr-2">
+        <div className="flex items-center w-full mt-2 font-mono">
+          <span className="text-white text-xs mr-2 drop-shadow">
             {formatTime(currentTime)}
           </span>
           <input
             type="range"
             min="0"
-            max={duration}
+            max={duration || 100}
             value={currentTime}
             onChange={(e) => {
               if (videoRef.current) {
                 videoRef.current.currentTime = Number(e.target.value);
               }
             }}
-            className="range range-primary range-xs flex-1"
+            className="range range-primary range-xs flex-1 accent-primary"
           />
-          <span className="text-white text-sm ml-2">
-            {formatTime(duration)}
+          <span className="text-white text-xs ml-2 drop-shadow">
+            {formatTime(duration || 0)}
           </span>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default Editorial;

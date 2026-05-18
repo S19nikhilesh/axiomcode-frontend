@@ -10,7 +10,7 @@ const ChatAi = ({ problem }) => {
     {
       role: "user",
       parts: [{ text: "Hello" }],
-   },
+    },
     {
       role: "model",
       parts: [{ text: "Great to meet you. I am your DSA tutor. How can I help you with this problem today?" }],
@@ -45,7 +45,6 @@ const ChatAi = ({ problem }) => {
         startCode: problem.startCode
       });
 
-     
       setMessages(prev => [...prev, {
         role: 'model',
         parts: [{ text: response.data.message }]
@@ -61,15 +60,17 @@ const ChatAi = ({ problem }) => {
   };
 
   return (
-    <div className="flex flex-col h-[500px] bg-neutral-900 border border-neutral-800  p-4 shadow-2xl">
-     
+    // bg-neutral-900 ko hata kar bg-base-200 kiya aur border-base-content/10 lagaya
+    <div className="flex flex-col h-[500px] bg-base-200 border border-base-content/10 p-4 shadow-2xl transition-colors duration-200">
+      
+      {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 scrollbar-thin">
         {messages.map((msg, idx) => (
           <div key={idx} className={`chat ${msg.role === 'model' ? 'chat-start' : 'chat-end'}`}>
-            <div className={`chat-bubble max-w-[85%] px-4 py-2.5  shadow-sm text-base  ${
+            <div className={`chat-bubble max-w-[85%] px-4 py-2.5 shadow-sm text-base ${
               msg.role === 'model' 
-                ? 'bg-neutral-800 text-zinc-100 border-neutral-700/60' 
-                : 'bg-emerald-600 text-white border-emerald-500/20'
+                ? 'bg-base-100 text-base-content border border-base-content/5' // AI Bubble adapts to base-100
+                : 'bg-emerald-600 text-white' // User bubble matches standard brand color seamlessly
             }`}>
               <div className="prose prose-sm leading-relaxed max-w-none text-current">
                 <Markdown>{msg.parts[0].text}</Markdown>
@@ -80,13 +81,14 @@ const ChatAi = ({ problem }) => {
         <div ref={messagesEndRef} />
       </div>
 
-      
-      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-2 pt-2 border-t border-neutral-800">
+      {/* Input Message Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-2 pt-2 border-t border-base-content/10">
         <input
           {...register("message", { required: true })}
           autoComplete="off"
           placeholder="Ask a hint..."
-          className="input h-11 flex-1 bg-neutral-800 border-neutral-700 text-zinc-200 text-sm rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
+          // Static input colors ko daisyUI input utilities aur token states par override kiya
+          className="input h-11 flex-1 bg-base-100 border-base-content/10 text-base-content text-sm rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
         />
         <button type="submit" className="btn h-11 w-11 min-h-0 p-0 rounded-xl bg-emerald-600 hover:bg-emerald-500 border-none text-white transition-colors">
           <Send size={18} />
