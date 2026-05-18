@@ -5,6 +5,7 @@ import axiosClient from '../utils/axiosClient';
 import SubmissionHistory from "../components/Sub_hist"
 import ChatAi from '../components/chatAI';
 import Editorial from '../components/Editorial';
+import { Sun, Moon } from 'lucide-react';
 
 function ProblemPage() {
   const { problemId } = useParams();
@@ -18,6 +19,14 @@ function ProblemPage() {
   const [loading, setLoading] = useState(true);
   const [isExecuting, setIsExecuting] = useState(false);
   const [runResult, setRunResult] = useState(null);
+  const [currentTheme, setCurrentTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+const handleProblemsPageThemeToggle = () => {
+  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setCurrentTheme(nextTheme);
+  document.documentElement.setAttribute('data-theme', nextTheme);
+  localStorage.setItem('theme', nextTheme);
+};
 
   // Load problem data
   useEffect(() => {
@@ -107,25 +116,39 @@ function ProblemPage() {
       {/* Navbar / Header */}
       <div className="flex items-center justify-between px-4 py-2 bg-base-100 border-b border-base-content/10">
         <div className="flex items-center gap-4">
-          <span className="text-base-content/60 text-sm hover:text-base-content cursor-pointer transition-colors">Solve Problem</span>
-          <h1 className="text-sm font-bold">{problem?.title}</h1>
+        <span className="text-base-content/60 text-sm hover:text-base-content cursor-pointer transition-colors">Solve Problem</span>
+        <h1 className="text-sm font-bold">{problem?.title}</h1>
         </div>
-        <div className="flex gap-2">
-          <button 
-            onClick={handleRunCode} 
-            disabled={isExecuting}
-            className={`btn btn-sm btn-ghost lowercase text-green-500 ${isExecuting ? 'loading' : ''}`}
-          >
-            Run
-          </button>
-          <button 
-            onClick={handleSubmitCode}
-            disabled={isExecuting}
-            className="btn btn-sm btn-success lowercase px-4 font-bold"
-          >
-            Submit
-          </button>
-        </div>
+    
+      <div className="flex items-center gap-4"> {/* Yahan layout sahi rakhne ke liye gap aur items-center de diya */}
+      
+      {/* 🌗 INDEPENDENT DOM-BASED THEME TOGGLE SWITCH */}
+      <button 
+        onClick={handleProblemsPageThemeToggle}
+        className="btn btn-ghost btn-circle btn-sm text-base-content/70 hover:text-base-content transition-colors"
+        aria-label="Toggle Theme"
+      >
+        {currentTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+      </button>
+
+      {/* Run & Submit Buttons */}
+      <div className="flex gap-2">
+        <button 
+          onClick={handleRunCode} 
+          disabled={isExecuting}
+          className={`btn btn-sm btn-ghost lowercase text-green-500 ${isExecuting ? 'loading' : ''}`}
+        >
+          Run
+        </button>
+        <button 
+          onClick={handleSubmitCode}
+          disabled={isExecuting}
+          className="btn btn-sm btn-success lowercase px-4 font-bold"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
       </div>
 
       {/* Main Content */}
