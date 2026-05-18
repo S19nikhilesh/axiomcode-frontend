@@ -1,15 +1,26 @@
 import React from 'react';
 import { Terminal, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 import networkBg from '../assets/network-bg.jpg';
+import Navbar from './Navbar'; // Apne path ke hisab se import check kar lena bhai
 
-const About = ({ setActiveTab }) => {
+const About = ({ setActiveTab, user, handleLogout }) => {
   return (
     <div 
       className="min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col justify-between" 
       style={{ backgroundImage: `url(${networkBg})` }}
     >
-      {/* Absolute overlay jo image ko halka dark aur blur karega taaki text mast chamke */}
+      {/* Absolute overlay jo poore screen ko (including navbar area) perfect dark tone dega */}
       <div className="absolute inset-0 bg-zinc-950/85 backdrop-blur-[2px] z-0"></div>
+
+      {/* ✨ NAVBAR INJECTED AS TOP OVERLAY LAYER */}
+      <div className="relative z-20 w-full">
+        <Navbar 
+          activeTab="about" 
+          setActiveTab={setActiveTab} 
+          user={user} 
+          handleLogout={handleLogout} 
+        />
+      </div>
 
       {/* Main Hero Grid Content Wrapper */}
       <div className="relative z-10 flex-grow flex items-center justify-center px-6 md:px-16 overflow-hidden">
@@ -91,23 +102,18 @@ const About = ({ setActiveTab }) => {
         </div>
       </div>
 
-      {/* MINIMAL FOOTER SECTION (Safely placed at the bottom wrapper) */}
-        <footer className="relative z-10 w-full border-t border-zinc-800/40 bg-zinc-950/20 backdrop-blur-sm py-4">
+      {/* MINIMAL FOOTER SECTION */}
+      <footer className="relative z-10 w-full border-t border-zinc-800/40 bg-zinc-950/20 backdrop-blur-sm py-4">
         <div className="max-w-7xl mx-auto px-6 md:px-16 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-[11px] text-zinc-500 tracking-wider">
-            
-            {/* Left Side: Dynamic Copyright */}
-            <div>
+          <div>
             &copy; {new Date().getFullYear()} AxiomCode. All rights reserved.
-            </div>
-
-            {/* Right Side: Developer Credit */}
-            <div className="flex items-center gap-1.5">
+          </div>
+          <div className="flex items-center gap-1.5">
             <span>Crafted by</span>
             <span className="text-zinc-400 font-bold hover:text-primary transition-colors cursor-default">Nikhilesh Sharma</span>
-            </div>
-
+          </div>
         </div>
-        </footer>
+      </footer>
     </div>
   );
 };
