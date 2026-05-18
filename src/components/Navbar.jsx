@@ -112,22 +112,25 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         <div className="flex-none gap-2">
           {user ? (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar border border-primary/20">
-                <div className="w-10 rounded-full flex items-center justify-center bg-neutral">
-                  <UserIcon size={20} className={activeTab === 'about' ? 'text-zinc-100' : 'text-base-content'} />
-                </div>
-              </label>
-              
-              <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
-                activeTab === 'about'
-                  ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
-                  : 'bg-base-100 border-base-content/10 text-base-content'
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar border border-primary/20">
+              {/* bg-neutral ko hatakar conditional ya dynamic neutral-content utilities lagayi hain */}
+              <div className={`w-10 rounded-full flex items-center justify-center transition-colors ${
+                activeTab === 'about' ? 'bg-zinc-800 text-zinc-100' : 'bg-base-200 text-base-content'
               }`}>
-                <li className="menu-title text-primary">Hello, {user.firstName}</li>
-                <li><Link to="/profile">Profile</Link></li>
-                <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
-              </ul>
-            </div>
+                <UserIcon size={20} />
+              </div>
+            </label>
+            
+            <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
+              activeTab === 'about'
+                ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
+                : 'bg-base-100 border-base-content/10 text-base-content'
+            }`}>
+              <li className="menu-title text-primary">Hello, {user.firstName}</li>
+              <li><Link to="/profile">Profile</Link></li>
+              <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
+            </ul>
+          </div>
           ) : (
             <div className="flex gap-2">
               <Link to="/login" className="btn btn-primary btn-sm">Login</Link>

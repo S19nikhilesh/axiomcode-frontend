@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+[data-theme="light"] {
+    --color-base-100: #fbfbfa !important; /* Premium Soft Warm White (Notion Style) */
+    --color-base-200: #f2f1ed !important; /* Soft Cream Gray */
+    --color-base-300: #e8e6e1 !important; /* Balanced Warm Border/Shadow */
+}
