@@ -15,7 +15,7 @@ import Admin from "./pages/Admin";
 import UpdateProblem from "./components/Codepanel";
 import AdminUpload from "./components/AdminUpload"
 import AdminRegister from "./components/Adminregister";
-
+import Potd from "./pages/Potd";
 
 function App() {
   
@@ -51,6 +51,7 @@ function App() {
         <Route path="/admin/upload/:problemId" element={isAuthenticated && user?.role === 'admin' ? <AdminUpload /> : <Navigate to="/" />} />
         <Route path="/problem/:problemId" element={isAuthenticated?<ProblemPage/>:<Navigate to="/login"/>}></Route>
         
+        <Route path="/potd" element={<Potd/>}></Route>
       </Routes>
     </>
   )
