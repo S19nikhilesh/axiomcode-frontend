@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { Flame, Trophy, Calendar, Code, CheckCircle2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import axiosClient from '../utils/axiosClient';
+import { useSelector } from 'react-redux';
 
-const Potd = ({ user, activeTab, setActiveTab }) => {
+const Potd = ({  activeTab, setActiveTab }) => {
     const [problem, setProblem] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const { user } = useSelector((state) => state.auth);
     // 🎯 Ab local state ki jagah hum direct Redux/Props wale user se read karenge
     // Agar user logged in hai toh uska status dikhega, nahi toh default false (guest ke liye)
     const hasSolvedToday = user?.hasSolvedToday || false;
@@ -21,7 +22,7 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
     useEffect(() => {
       const fetchPOTD = async () => {
         try {
-          // Pure clean request - No token check required here!
+    
           const response = await axiosClient.get('/problem/problemoftheday');
           setProblem(response.data);
         } catch (err) {

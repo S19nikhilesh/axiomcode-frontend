@@ -135,15 +135,30 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
                 </div>
               </label>
               
-              <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow menu menu-sm dropdown-content rounded-box w-52 border ${
-                activeTab === 'about'
-                  ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
-                  : 'bg-base-100 border-base-content/10 text-base-content'
-              }`}>
-                <li className="menu-title text-primary">Hello, {user.firstName}</li>
-                <li><Link to="/profile">Profile</Link></li>
-                <li><button onClick={handleLogout} className="text-error"><LogOut size={16}/> Logout</button></li>
-              </ul>
+              <ul tabIndex={0} className={`mt-3 z-[100] p-2 shadow-xl menu menu-sm dropdown-content rounded-xl w-52 border ${
+    activeTab === 'about'
+      ? 'bg-zinc-900/95 backdrop-blur-md border-zinc-800 text-zinc-200'
+      : 'bg-base-100 border-base-content/10 text-base-content'
+  }`}>
+    {/* Safe navigation lagaya taaki user guest ho toh handle ho jaye */}
+    <li className="menu-title text-primary font-bold">Hello, {user?.firstName || 'Coder'}</li>
+    
+    <li className="my-0.5">
+      <Link 
+        to="/profile" 
+        onClick={() => setActiveTab && setActiveTab('profile')}
+        className={`font-semibold py-2 ${activeTab === 'profile' ? 'text-primary font-bold' : ''}`}
+      >
+        <user size={16} /> My Profile
+      </Link>
+    </li>
+    
+    <li className="mt-1 pt-1 border-t border-base-content/5">
+      <button onClick={handleLogout} className="text-error font-semibold flex items-center gap-2">
+        <LogOut size={16}/> Logout
+      </button>
+    </li>
+</ul>
             </div>
           ) : (
             <div className="flex gap-2">
