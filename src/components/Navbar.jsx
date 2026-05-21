@@ -69,7 +69,7 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         </span>
 
         {/* 3. CONTEST TAB - (🎯 Fixed: nClick Typo Fixed to onClick) */}
-        {/* <span 
+        <span 
           onClick={() => {
             setActiveTab('contest');
             navigate('/'); 
@@ -81,9 +81,9 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
           }`}
         >
           Contest
-        </span> */}
+        </span>
 
-        {/* 4. POTD TAB */}
+        
         <Link 
           to="/potd"
           onClick={() => setActiveTab('potd')}
@@ -97,10 +97,10 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         </Link>
       </div>
 
-      {/* Right Side: Theme Switch + Admin + Profile Controls */}
+     
       <div className="flex items-center gap-4">
         
-        {/* 🌗 INDUSTRIAL THEME TOGGLE SWITCH */}
+        
         {activeTab !== 'about' && (
           <button 
             onClick={toggleTheme}

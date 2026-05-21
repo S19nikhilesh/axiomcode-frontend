@@ -7,14 +7,14 @@ import ChatAi from '../components/chatAI';
 import Editorial from '../components/Editorial';
 import { Sun, Moon } from 'lucide-react';
 
-function ProblemPage() {
+function ProblemPage({curr}) {
   const { problemId } = useParams();
   const editorRef = useRef(null);
   
   // State Management
   const [problem, setProblem] = useState(null);
   const [selectedLanguage, setSelectedLanguage] = useState('c++');
-  const [activeLeftTab, setActiveLeftTab] = useState('description');
+  const [activeLeftTab, setActiveLeftTab] = useState(curr||'description');
   const [activeBottomTab, setActiveBottomTab] = useState('testcase');
   const [loading, setLoading] = useState(true);
   const [isExecuting, setIsExecuting] = useState(false);

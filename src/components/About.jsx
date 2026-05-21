@@ -1,9 +1,12 @@
 import React from 'react';
 import { Terminal, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 import networkBg from '../assets/network-bg.jpg';
-import Navbar from './Navbar'; // Apne path ke hisab se import check kar lena bhai
+import Navbar from './Navbar'; 
+import { useSelector } from 'react-redux';
 
-const About = ({ setActiveTab, user, handleLogout }) => {
+
+const About = ({ setActiveTab, handleLogout }) => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div 
       className="min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col justify-between" 

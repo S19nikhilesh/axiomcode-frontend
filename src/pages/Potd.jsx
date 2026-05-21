@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Flame, Trophy, Calendar, Code, CheckCircle2 } from 'lucide-react';
-import axios from 'axios';
 import Navbar from '../components/Navbar';
+import axiosClient from '../utils/axiosClient';
 
-
-// 🎯 Top par props mein activeTab aur setActiveTab ko add karo
 const Potd = ({ user, activeTab, setActiveTab }) => {
     const [problem, setProblem] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [hasSolvedToday, setHasSolvedToday] = useState(false);
+
+    // 🎯 Ab local state ki jagah hum direct Redux/Props wale user se read karenge
+    // Agar user logged in hai toh uska status dikhega, nahi toh default false (guest ke liye)
+    const hasSolvedToday = user?.hasSolvedToday || false;
   
-    // 🎯 Yeh effect ensures karega ki page load hote hi Navbar ka colour badle
     useEffect(() => {
       if (setActiveTab) {
         setActiveTab('potd');
@@ -21,12 +21,9 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
     useEffect(() => {
       const fetchPOTD = async () => {
         try {
-          const response = await axios.get('/api/problem/problemoftheday');
+          // Pure clean request - No token check required here!
+          const response = await axiosClient.get('/problem/problemoftheday');
           setProblem(response.data);
-          
-          if (user?.PotdSolved?.includes(response.data._id)) {
-            setHasSolvedToday(true);
-          }
         } catch (err) {
           console.error("Error fetching POTD", err);
         } finally {
@@ -34,7 +31,7 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
         }
       };
       fetchPOTD();
-    }, [user]);
+    }, []); 
   
     if (loading) {
       return (
@@ -55,8 +52,7 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
   
     return (
       <>
-        {/* 🎯 Navbar ko dono states pass karo taaki click functions kaam karein */}
-        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} user={user} />
         
         <div className="min-h-[85vh] bg-base-100 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
           <div className="max-w-4xl mx-auto space-y-8">
@@ -79,7 +75,7 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
                 <div className="space-y-1">
                   <span className="text-xs font-medium tracking-wider text-base-content/50 uppercase">Today's Status</span>
                   <h3 className="text-2xl font-bold text-base-content">
-                    {hasSolvedToday ? "Completed" : "Pending Action"}
+                    {hasSolvedToday ? "Completed" : "Pending"}
                   </h3>
                 </div>
                 <div className={`p-3 rounded-xl ${hasSolvedToday ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}`}>
@@ -123,7 +119,7 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
                     }`}
                   >
                     <Code size={18} />
-                    {hasSolvedToday ? "Review Workspace Solution" : "Start Coding Workspace"}
+                    {hasSolvedToday ? "Review Solution" : "Start Coding"}
                   </Link>
                 </div>
               </div>
@@ -134,6 +130,5 @@ const Potd = ({ user, activeTab, setActiveTab }) => {
       </>
     );
   };
-  
 
 export default Potd;
