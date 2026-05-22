@@ -69,11 +69,9 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
         </span>
 
         {/* 3. CONTEST TAB - (🎯 Fixed: nClick Typo Fixed to onClick) */}
-        <span 
-          onClick={() => {
-            setActiveTab('contest');
-            navigate('/'); 
-          }}
+        <Link 
+          to="/contest"
+          onClick={() => setActiveTab('contest')}
           className={`cursor-pointer transition-colors pb-1 ${
             activeTab === 'contest' 
               ? 'text-primary font-bold border-b-2 border-primary' 
@@ -81,7 +79,7 @@ const Navbar = ({ activeTab, setActiveTab, user, handleLogout }) => {
           }`}
         >
           Contest
-        </span>
+        </Link>
 
         
         <Link 

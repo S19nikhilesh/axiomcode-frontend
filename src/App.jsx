@@ -17,7 +17,7 @@ import AdminUpload from "./components/AdminUpload"
 import AdminRegister from "./components/Adminregister";
 import Potd from "./pages/Potd";
 import Profilepage from "./pages/Profilepage";
-
+import ContestPage from "./pages/Contest";
 
 function App() {
   
@@ -55,6 +55,7 @@ function App() {
         
         <Route path="/potd" element={<Potd activeTab={activeTab} setActiveTab={setActiveTab} user={user}/>}></Route>
         <Route path="/profile" element={<Profilepage activeTab={activeTab} setActiveTab={setActiveTab} user={user}/>}></Route>
+        <Route path="/contest" element={<ContestPage activeTab={activeTab} setActiveTab={setActiveTab} user={user}/>}></Route>
       </Routes>
     </>
   )
