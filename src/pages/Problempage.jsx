@@ -1,14 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // 👈 exact hooks imported safely
 import axiosClient from '../utils/axiosClient';
 import SubmissionHistory from "../components/Sub_hist"
 import ChatAi from '../components/chatAI';
 import Editorial from '../components/Editorial';
 import { Sun, Moon } from 'lucide-react';
+import socket from '../utils/socket'; // 👈 global socket instance connected safely
+import { useSelector } from 'react-redux';
+
 
 function ProblemPage() {
   const { problemId } = useParams();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const [searchParams] = useSearchParams();
+  const matchId = searchParams.get('matchId');
+  console.log(matchId) // 👈 extract matchId from URL without breaking routes
   const editorRef = useRef(null);
   
   // State Management
@@ -21,12 +29,12 @@ function ProblemPage() {
   const [runResult, setRunResult] = useState(null);
   const [currentTheme, setCurrentTheme] = useState(localStorage.getItem('theme') || 'dark');
 
-const handleProblemsPageThemeToggle = () => {
-  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setCurrentTheme(nextTheme);
-  document.documentElement.setAttribute('data-theme', nextTheme);
-  localStorage.setItem('theme', nextTheme);
-};
+  const handleProblemsPageThemeToggle = () => {
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setCurrentTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    localStorage.setItem('theme', nextTheme);
+  };
 
   // Load problem data
   useEffect(() => {
@@ -37,11 +45,25 @@ const handleProblemsPageThemeToggle = () => {
       } catch (err) {
         console.error("Error fetching problem", err);
       } finally {
-        setLoading(false);
+        loading && setLoading(false);
       }
     };
     fetchProblem();
   }, [problemId]);
+
+  // 🚀 LIVE CONTEST WINNER LISTEN BUFFER
+  useEffect(() => {
+    if (!matchId) return;
+
+    socket.on('match_over', ({ winnerId, message }) => {
+        alert(message);
+        navigate('/contest');
+    });
+
+    return () => {
+        socket.off('match_over');
+    };
+  }, [matchId, navigate]);
 
   // Update editor content when language or problem changes
   useEffect(() => {
@@ -85,17 +107,31 @@ const handleProblemsPageThemeToggle = () => {
     }
   };
 
-  // API Call for Full Submission
+  // API Call for Full Submission (🎯 TRIPLE CHECK SAFE LOCK ZONE)
   const handleSubmitCode = async () => {
     setIsExecuting(true);
     setActiveBottomTab('result');
     const userCode = editorRef.current.getValue();
     try {
+      // 1. Hit standard compilation matrix first
       const res = await axiosClient.post(`/submission/submit/${problemId}`, {
         code: userCode,
         language: selectedLanguage,
       });
       setRunResult(res.data.results);
+
+      // 2. Agar saare test cases pass ho gaye hain (accepted), aur banda contest ke link se aaya hai
+      if (res.data && matchId) {
+        if (res.data.results?.status === 'accepted') {
+            // 👇 Yeh log daal kar check karo terminal/browser console mein
+            console.log("🔥 MATCH ACCEPTED! Sending socket emit...", { matchId, userId: user._id });
+            
+            socket.emit('match_submit', { roomId: matchId, userId: user._id || "guest" });
+        } else {
+            console.log("❌ Code galat hai ya saare test cases pass nahi hue:", res.data.results?.status);
+        }
+     }
+
     } catch (err) {
       setRunResult({ error: "Execution failed. Check console." });
       console.error(err);
@@ -120,7 +156,7 @@ const handleProblemsPageThemeToggle = () => {
         <h1 className="text-sm font-bold">{problem?.title}</h1>
         </div>
     
-      <div className="flex items-center gap-4"> {/* Yahan layout sahi rakhne ke liye gap aur items-center de diya */}
+      <div className="flex items-center gap-4"> 
       
       {/* 🌗 INDEPENDENT DOM-BASED THEME TOGGLE SWITCH */}
       <button 
@@ -278,7 +314,7 @@ const handleProblemsPageThemeToggle = () => {
           <div className="flex-1 overflow-hidden">
             <Editor
               height="100%"
-              theme="vs-dark" // Editor content coding standard hamesha dark set badhiya lagta hai
+              theme="vs-dark" 
               language={selectedLanguage === 'c++' ? 'cpp' : selectedLanguage}
               onMount={handleEditorDidMount}
               options={{
