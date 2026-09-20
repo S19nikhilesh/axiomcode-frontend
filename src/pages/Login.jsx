@@ -11,13 +11,12 @@ const LoginSchema = z.object({
   emailId: z.string().email(),
   password: z.string().min(8, "Password should contain atleast 8 characters")
 })
-//...regsiter ek object return karta hai isliye spread operator lagaya
-//&& ka matlab agr firdt conditon true then return second , but if first false then return first
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch=useDispatch();
   const navigate=useNavigate();
-  // Add 'error' here!
+ 
   const { isAuthenticated, error,user } = useSelector((state) => state.auth);
   
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -83,7 +82,7 @@ function Login() {
                   className={`input input-bordered pr-4 ${errors.password ? 'input-error' : ''}`}
               />
                <button 
-                  type="button" // Important: prevents form submission
+                  type="button" 
                   className="absolute inset-y-0 right-3 mr-10 mt-7.5 flex items-center text-gray-500 hover:text-primary"
                   onClick={() => setShowPassword(!showPassword)}
                 >

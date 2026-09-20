@@ -15,7 +15,7 @@ function Homepage({activeTab, setActiveTab}) {
   const [solvedProblems, setSolvedProblems] = useState([]);
   
 
-  // const [loading, setLoading] = useState(true); // Added loading state
+
   const loading=false;
   const [filters, setFilters] = useState({
     status: 'all',
@@ -73,9 +73,9 @@ function Homepage({activeTab, setActiveTab}) {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
- // Is tarah se likho taaki agar 'problems' array na ho, toh app crash na kare
+
 const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
-  // Defense: check karo ki prob aur uski properties exist karti hain
+
   if (!prob) return false;
 
   const matchDifficulty = filters.difficulty === 'all' || 
@@ -89,15 +89,15 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
                       (isSolvedArray && solvedProblems.some(sp => sp._id === prob._id));
 
   return matchDifficulty && matchTag && matchStatus;
-}) : []; // Agar array nahi hai, toh khali array return karo
+}) : []; // if no problems solved
   return (
     <div className="min-h-screen bg-base-200 text-base-content">
-      {/* Navigation Bar */}
+      
       
       {activeTab !== 'about' && (
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} user={user} handleLogout={handleLogout} />
     )}
-      {/* Main Content */}
+     
       <main >
 
       {activeTab === 'about' && (
@@ -108,7 +108,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
 
       {activeTab==='problems' && (
       <div className="max-w-6xl mx-auto p-4 md:p-8">
-        {/* Statistics Hero (Optional but looks good) */}
+       
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="stats shadow bg-base-100">
                 <div className="stat">
@@ -132,7 +132,7 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
             </div>
         </div>
 
-        {/* Filter Section */}
+       
         <div className="flex flex-wrap gap-3 mb-6 bg-base-100 p-4 rounded-xl shadow-sm">
           <select name="status" className="select select-bordered select-sm md:select-md" onChange={handleFilterChange}>
             <option value="all">Status: All</option>
@@ -157,10 +157,10 @@ const filteredProblems = Array.isArray(problems) ? problems.filter((prob) => {
           </select>
         </div>
 
-        {/* Problems List Table */}
+    
         <div className="overflow-x-auto bg-base-100 rounded-xl shadow-xl border border-base-content/5">
           <table className="table table-zebra w-full">
-            {/* head */}
+            
             <thead className="bg-base-200">
               <tr>
                 <th className="w-12">Status</th>

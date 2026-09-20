@@ -1,21 +1,19 @@
-//base url konse API ko hit krna
+
 import axios from "axios"
 
 const axiosClient= axios.create({
     baseURL: "https://axiomcode-backend-1.onrender.com",
     // baseURL: "http://localhost:3000",
-     //backend mera is url pe host hai baseURL:"http://localhost:3000", 
-    withCredentials:true,// browser tu iske sath cookies to attach kar dena
+    
+    withCredentials:true,
     headers: { 
         'Content-Type':'application/json',
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
-        'Expires': '0', //mera data json format mai hai
+        'Expires': '0', 
      },
   });
 
 
 export default axiosClient;
 
-
-//axiosClient.post('/user/register',data)  ab har baar poora URL/user/register nhi likhna padega

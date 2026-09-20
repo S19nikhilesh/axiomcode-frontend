@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';//store ko configure krte hai toolkit se
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosClient from './utils/axiosClient';
 
 export const registerUser = createAsyncThunk(
@@ -72,7 +72,7 @@ const authSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.user = action.payload;
-                state.isAuthenticated = !!action.payload; //agr user ka koi data nhi aaya NULL ,so yeh !!NULL=false
+                state.isAuthenticated = !!action.payload;
                 state.error = null;
             })
             .addCase(registerUser.rejected, (state, action) => {

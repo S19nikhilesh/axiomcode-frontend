@@ -84,7 +84,7 @@ function Signup() {
                 />
                 {/* Eye Icon Button */}
                 <button 
-                  type="button" // Important: prevents form submission
+                  type="button" 
                   className="absolute inset-y-0 right-3 pr-4 flex items-center text-gray-500 hover:text-primary"
                   onClick={() => setShowPassword(!showPassword)}
                 >

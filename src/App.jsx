@@ -21,21 +21,20 @@ import ContestPage from "./pages/Contest";
 
 function App() {
   
-  //is autenticated hai ya nhi uska code yaha pe hoga 
-  const {isAuthenticated,loading,user}=useSelector((state)=>state.auth) //state. slice ka naam
+  const {isAuthenticated,loading,user}=useSelector((state)=>state.auth) 
   const [activeTab, setActiveTab] = useState(!user ? 'about' : 'problems');
   const dispatch=useDispatch();
 
   useEffect(()=>{
-    dispatch(checkAuth()); //function call
-  },[dispatch])//ek hi baar call krna chchta hu , jab dispatch change ho -jo kabhi hoga nhi,ya khali array bhi chodd skte ho
+    dispatch(checkAuth()); 
+  },[dispatch])
 
   if(loading){
     return<div className="min-h-screen flex items-center justify-center">
       <span className="loading loading-spinner loading-lg"></span>
     </div>
   }
- //pehle directly siginup page pe redirect hora tha . 
+
   return (
     <>
       <Routes>  

@@ -9,8 +9,7 @@ const Potd = ({  activeTab, setActiveTab }) => {
     const [problem, setProblem] = useState(null);
     const [loading, setLoading] = useState(true);
     const { user } = useSelector((state) => state.auth);
-    // 🎯 Ab local state ki jagah hum direct Redux/Props wale user se read karenge
-    // Agar user logged in hai toh uska status dikhega, nahi toh default false (guest ke liye)
+   
     const hasSolvedToday = user?.hasSolvedToday || false;
   
     useEffect(() => {
@@ -58,7 +57,7 @@ const Potd = ({  activeTab, setActiveTab }) => {
         <div className="min-h-[85vh] bg-base-100 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
           <div className="max-w-4xl mx-auto space-y-8">
             
-            {/* TOP METRICS GRID */}
+           
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Streak Card */}
               <div className="p-5 rounded-2xl bg-base-200 border border-base-content/5 flex items-center justify-between shadow-sm">

@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 
 
-const BACKEND_URL = 'http://localhost:3000'; 
+const BACKEND_URL = 'https://axiomcode-backend-1.onrender.com'; 
 
 
 const socket = io(BACKEND_URL, {

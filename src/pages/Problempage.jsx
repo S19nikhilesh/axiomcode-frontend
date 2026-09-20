@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; // 👈 exact hooks imported safely
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom'; 
 import axiosClient from '../utils/axiosClient';
 import SubmissionHistory from "../components/Sub_hist"
 import ChatAi from '../components/chatAI';
 import Editorial from '../components/Editorial';
 import { Sun, Moon } from 'lucide-react';
-import socket from '../utils/socket'; // 👈 global socket instance connected safely
+import socket from '../utils/socket'; 
 import { useSelector } from 'react-redux';
 
 
@@ -16,7 +16,7 @@ function ProblemPage() {
   const { user } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
   const matchId = searchParams.get('matchId');
-  console.log(matchId) // 👈 extract matchId from URL without breaking routes
+
   const editorRef = useRef(null);
   
   // State Management
@@ -51,7 +51,7 @@ function ProblemPage() {
     fetchProblem();
   }, [problemId]);
 
-  // 🚀 LIVE CONTEST WINNER LISTEN BUFFER
+  // LIVE CONTEST WINNER LISTEN BUFFER
   useEffect(() => {
     if (!matchId) return;
 
@@ -82,7 +82,7 @@ function ProblemPage() {
     }
   }
 
-  // API Call for Running Code (Dry Run)
+  
   const handleRunCode = async () => {
     setIsExecuting(true);
     setActiveBottomTab('result');
@@ -107,28 +107,26 @@ function ProblemPage() {
     }
   };
 
-  // API Call for Full Submission (🎯 TRIPLE CHECK SAFE LOCK ZONE)
+  // API Call for Full Submission 
   const handleSubmitCode = async () => {
     setIsExecuting(true);
     setActiveBottomTab('result');
     const userCode = editorRef.current.getValue();
     try {
-      // 1. Hit standard compilation matrix first
+    
       const res = await axiosClient.post(`/submission/submit/${problemId}`, {
         code: userCode,
         language: selectedLanguage,
       });
       setRunResult(res.data.results);
 
-      // 2. Agar saare test cases pass ho gaye hain (accepted), aur banda contest ke link se aaya hai
+      
       if (res.data && matchId) {
         if (res.data.results?.status === 'accepted') {
-            // 👇 Yeh log daal kar check karo terminal/browser console mein
-            console.log("🔥 MATCH ACCEPTED! Sending socket emit...", { matchId, userId: user._id });
             
             socket.emit('match_submit', { roomId: matchId, userId: user._id || "guest" });
         } else {
-            console.log("❌ Code galat hai ya saare test cases pass nahi hue:", res.data.results?.status);
+            console.log("Code galat hai ya saare test cases pass nahi hue:", res.data.results?.status);
         }
      }
 
@@ -149,7 +147,7 @@ function ProblemPage() {
   return (
     <div className="flex flex-col h-screen bg-base-300 text-base-content transition-colors duration-200">
       
-      {/* Navbar / Header */}
+      {/* Navbar */}
       <div className="flex items-center justify-between px-4 py-2 bg-base-100 border-b border-base-content/10">
         <div className="flex items-center gap-4">
         <span className="text-base-content/60 text-sm hover:text-base-content cursor-pointer transition-colors">Solve Problem</span>
@@ -158,7 +156,7 @@ function ProblemPage() {
     
       <div className="flex items-center gap-4"> 
       
-      {/* 🌗 INDEPENDENT DOM-BASED THEME TOGGLE SWITCH */}
+      {/* THEME TOGGLE SWITCH */}
       <button 
         onClick={handleProblemsPageThemeToggle}
         className="btn btn-ghost btn-circle btn-sm text-base-content/70 hover:text-base-content transition-colors"
@@ -190,7 +188,7 @@ function ProblemPage() {
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         
-        {/* Left Side: Description/Solutions */}
+        {/* Left Side: */}
         <div className="w-1/2 flex flex-col border-r border-base-content/10 bg-base-200">
           
           {/* Tab Headers */}
